@@ -1,0 +1,75 @@
+#! C:/Program Files/Nuke13.0v2/nuke-13.0.2.dll -nx
+version 13.0 v2
+define_window_layout_xml {<?xml version="1.0" encoding="UTF-8"?>
+<layout version="1.0">
+    <window x="-1" y="-8" w="1920" h="1027" maximized="1" screen="0">
+        <splitter orientation="1">
+            <split size="1167"/>
+            <splitter orientation="1">
+                <split size="613"/>
+                <splitter orientation="2">
+                    <split size="493"/>
+                    <dock id="" hideTitles="1" activePageId="Properties.1" focus="true">
+                        <page id="Properties.1"/>
+                    </dock>
+                    <split size="492"/>
+                    <dock id="" activePageId="uk.co.thefoundry.scripteditor.1">
+                        <page id="uk.co.thefoundry.scripteditor.1"/>
+                    </dock>
+                </splitter>
+                <split size="506"/>
+                <dock id="" activePageId="NukeServerSocket.MainWindow">
+                    <page id="NukeServerSocket.MainWindow"/>
+                </dock>
+                <split size="40"/>
+                <dock id="" hideTitles="1" activePageId="Toolbar.1">
+                    <page id="Toolbar.1"/>
+                </dock>
+            </splitter>
+            <split size="749"/>
+            <splitter orientation="2">
+                <split size="493"/>
+                <dock id="" activePageId="Viewer.1">
+                    <page id="Viewer.1"/>
+                </dock>
+                <split size="492"/>
+                <dock id="" activePageId="DAG.1">
+                    <page id="DAG.1"/>
+                </dock>
+            </splitter>
+        </splitter>
+    </window>
+</layout>
+}
+Root {
+ inputs 0
+ name "E:/zExercise/Nuke_Python/Disabler Node/gizmo/disabler_1.0.0.nk"
+ format "2048 1556 0 0 2048 1556 1 2K_Super_35(full-ap)"
+ proxy_type scale
+ proxy_format "1024 778 0 0 1024 778 1 1K_Super_35(full-ap)"
+ colorManagement Nuke
+ workingSpaceLUT linear
+ monitorLut sRGB
+ monitorOutLUT rec709
+ int8Lut sRGB
+ int16Lut sRGB
+ logLut Cineon
+ floatLut linear
+}
+NoOp {
+ inputs 0
+ name Disabler
+ tile_color 0xff0067ff
+ xpos -174
+ ypos -233
+ addUserKnob {20 disabler l Disabler}
+ addUserKnob {1 node_classes l "Node Classes"}
+ addUserKnob {1 node_labels l "Node Labels"}
+ addUserKnob {22 TOGGLE l Enabled T "# Initialize the toggle value.\ntry:\n    toggle\nexcept NameError:\n    toggle = 1\n\n# Increment the toggle value when hitting the \"Enable/Disable\" button\ntoggle += 1\n\n# Getting all added node classes as a list.\nnode_classes = \[node.strip() for node in\n                nuke.thisNode()\[\"node_classes\"].getValue().split(\",\") if node]\n\n# Getting all added node labels as a list.\nnode_labels = \[node.strip() for node in\n               nuke.thisNode()\[\"node_labels\"].getValue().split(\",\") if node]\n\n# Set the process nodes to either all nodes or selected nodes.\nif nuke.thisNode()\[\"all_nodes\"].getValue():\n    process_nodes = nuke.allNodes()\nelse:\n    process_nodes = nuke.selectedNodes()\n\n# Disable/Enable nodes using node class and labels.\nfor node in process_nodes:\n    # Process from node classes list.\n    if node.Class() in node_classes and node.knob(\"disable\"):\n        node\[\"disable\"].setValue(toggle % 2 == 0)\n\n    # Process from node labels list if \"include labels\" is enabled.\n    if node\[\"label\"].getValue() in node_labels and node.knob(\"disable\") and nuke.thisNode()\[\"include_labels\"].getValue():\n        node\[\"disable\"].setValue(toggle % 2 == 0)\n\n# Update the label of Toggle Button while toggling.\nif toggle % 2 == 0:\n    nuke.thisKnob().setLabel(\"Disabled\")\nelse:\n    nuke.thisKnob().setLabel(\"Enabled\")" +STARTLINE}
+ addUserKnob {6 all_nodes l "All Nodes" -STARTLINE}
+ all_nodes true
+ addUserKnob {6 include_labels l "Include Labels" -STARTLINE}
+ addUserKnob {26 ""}
+ addUserKnob {22 ADD_NODE_CLASS l "Add Node Class" T "node_classes = \[node.strip() for node in nuke.thisNode()\[\n    \"node_classes\"].getValue().split(\",\") if node]\n\nselected_classes = \[node.Class() for node in nuke.selectedNodes()\n                    if node and node.knob(\"disable\")]\n\nnode_classes.extend(selected_classes)\n\nall_classes = sorted(set(node_classes))\n\nnuke.thisNode()\[\"node_classes\"].setValue(\", \".join(all_classes))" +STARTLINE}
+ addUserKnob {22 ADD_NODE_LABELS l "Add Node Labels" -STARTLINE T "node_labels = \[node.strip() for node in\n               nuke.thisNode()\[\"node_labels\"].getValue().split(\",\") if node]\n\nselected_node_labels = \[node\[\"label\"].getValue() for node in\n                        nuke.selectedNodes() if node.knob(\"disable\") and node\[\"label\"].getValue()]\n\nnode_labels.extend(selected_node_labels)\n\nall_labels = sorted(set(node_labels))\n\nnuke.thisNode()\[\"node_labels\"].setValue(\", \".join(all_labels))"}
+}
