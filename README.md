@@ -1,1 +1,1 @@
-# Node Disabler Script for Foundary Nuke.
+# Node Disabler Script for Foundry Nuke.
