@@ -16,6 +16,5 @@ Eg: ZDefocus, Oflow, etc.
 \# Click "Add node class" button in disabler node.
 
 \# Now you can toggle the "Enable/Disable" button to Enable/Disable the added node class.
-
 \# Enable "All Nodes" check box to disable all nodes of that class otherwise
 only selected nodes will be disabled.
